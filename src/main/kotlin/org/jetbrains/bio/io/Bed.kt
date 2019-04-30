@@ -450,13 +450,17 @@ enum class BedField(val field: AbstractBedField<Any?>) {
         }
     }),
 
-    SCORE(object : AbstractBedField<Short>("score", 4) {
-        override fun read(value: String): Short {
+    /**
+     * Though UCSC defines score as an integer in range [0,1000], a significant number of BED providers
+     * ignore the range. Thus we define score as Int here.
+     */
+    SCORE(object : AbstractBedField<Int>("score", 4) {
+        override fun read(value: String): Int {
             // score - A score between 0 and 1000. If the track line useScore attribute is set
             // to 1 for this annotation data set, the score value will determine the level of gray
             // in which this feature is displayed (higher numbers = darker gray). This table shows
             // the Genome Browser's translation of BED score values into shades of gray ..
-            return value.toShort()
+            return value.toInt()
         }
     }),
 
