@@ -96,6 +96,12 @@ class LocationsMergingList private constructor(
         }).iterator()
     }
 
+    fun asSequence(): Sequence<Location> = Strand.values().asSequence().flatMap { s ->
+        genomeQuery.get().asSequence().flatMap { chr ->
+            this[chr, s].asSequence()
+        }
+    }
+
     /** The number of locations in this list. */
     val size: Int
         get() = genomeQuery.get().sumBy {
